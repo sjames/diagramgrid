@@ -75,9 +75,9 @@
     // Simple case: just place children with gap
     if direction == "row" {
       // Columns: auto for each child
-      // Row: 1fr if stretch, else auto
+      // Row: auto (1fr would expand to fill container height)
       let cols = (auto,) * n
-      let rows = if align-items == "stretch" { (1fr,) } else { (auto,) }
+      let rows = (auto,)
 
       grid(
         columns: cols,
@@ -90,7 +90,7 @@
     } else {
       // direction == "column"
       let rows = (auto,) * n
-      let cols = if align-items == "stretch" { (1fr,) } else { (auto,) }
+      let cols = (auto,)
 
       grid(
         columns: cols,
@@ -125,18 +125,16 @@
       }
 
       if direction == "row" {
-        let rows = if align-items == "stretch" { (1fr,) } else { (auto,) }
         grid(
           columns: spec,
-          rows: rows,
+          rows: (auto,),
           align: cell-align,
           ..named,
           ..items,
         )
       } else {
-        let cols = if align-items == "stretch" { (1fr,) } else { (auto,) }
         grid(
-          columns: cols,
+          columns: (auto,),
           rows: spec,
           align: cell-align,
           ..named,
@@ -158,18 +156,16 @@
     }
 
     if direction == "row" {
-      let rows = if align-items == "stretch" { (1fr,) } else { (auto,) }
       grid(
         columns: spec,
-        rows: rows,
+        rows: (auto,),
         align: cell-align,
         ..named,
         ..items,
       )
     } else {
-      let cols = if align-items == "stretch" { (1fr,) } else { (auto,) }
       grid(
-        columns: cols,
+        columns: (auto,),
         rows: spec,
         align: cell-align,
         ..named,
