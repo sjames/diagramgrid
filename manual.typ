@@ -23,13 +23,14 @@ A lightweight Typst package for creating clean block diagrams with CSS flexbox-l
 
 The most basic use case — a vertical stack of layers:
 
-#align(center,
+#figure(
   dg-layers(
     dg-rect([Presentation Layer], fill: rgb("#f8f9fa"), width: 200pt),
     dg-rect([Business Logic Layer], fill: rgb("#f8f9fa"), width: 200pt),
     dg-rect([Data Access Layer], fill: rgb("#f8f9fa"), width: 200pt),
     dg-rect([Database], fill: rgb("#f8f9fa"), width: 200pt),
-  )
+  ),
+  caption: [A simple four-tier architecture using vertical layers.],
 )
 
 ```typst
@@ -45,7 +46,7 @@ The most basic use case — a vertical stack of layers:
 
 Using `dg-flex` for horizontal layout and `dg-circle` for nodes:
 
-#align(center,
+#figure(
   dg-flex(
     direction: "row",
     justify: "center",
@@ -54,7 +55,8 @@ Using `dg-flex` for horizontal layout and `dg-circle` for nodes:
     dg-circle([B], fill: rgb("#e8f5e9")),
     dg-circle([C], fill: rgb("#fff3e0")),
     dg-circle([D], fill: rgb("#fce4ec")),
-  )
+  ),
+  caption: [Horizontal row of circular nodes.],
 )
 
 ```typst
@@ -73,7 +75,7 @@ Using `dg-flex` for horizontal layout and `dg-circle` for nodes:
 
 Combining `dg-layers` with nested `dg-flex`:
 
-#align(center,
+#figure(
   dg-layers(
     dg-rect([*Client Applications*], fill: rgb("#e2e8f0"), width: 280pt),
     dg-flex(
@@ -91,7 +93,8 @@ Combining `dg-layers` with nested `dg-flex`:
       dg-rect([Inventory], fill: rgb("#e0e7ff")),
     ),
     dg-rect([*Database Cluster*], fill: rgb("#e2e8f0"), width: 280pt),
-  )
+  ),
+  caption: [Nested layout with services grouped inside layers.],
 )
 
 ```typst
@@ -112,7 +115,7 @@ Combining `dg-layers` with nested `dg-flex`:
 
 Combining rectangles, circles, and ellipses:
 
-#align(center,
+#figure(
   dg-flex(
     direction: "row",
     justify: "space-around",
@@ -122,7 +125,8 @@ Combining rectangles, circles, and ellipses:
     dg-circle([Hub], fill: rgb("#fef9c3")),
     dg-ellipse([Processing Unit], fill: rgb("#dbeafe"), width: 100pt),
     dg-rect([Output], fill: rgb("#dcfce7"), width: 80pt),
-  )
+  ),
+  caption: [Mixed shapes: rectangles, circles, and ellipses.],
 )
 
 ```typst
@@ -142,23 +146,25 @@ Combining rectangles, circles, and ellipses:
 
 Using the blueprint theme:
 
-#align(center,
+#figure(
   themed-layers(theme-blueprint,
     [Frontend Application],
     [API Layer],
     [Service Mesh],
     [Infrastructure],
-  )
+  ),
+  caption: [Blueprint theme with technical styling.],
 )
 
 Using the warm theme:
 
-#align(center,
+#figure(
   themed-layers(theme-warm,
     [User Interface],
     [Business Rules],
     [Data Store],
-  )
+  ),
+  caption: [Warm theme with softer colors.],
 )
 
 ```typst
@@ -180,7 +186,7 @@ Using the warm theme:
 
 A realistic microservices architecture diagram:
 
-#align(center,
+#figure(
   dg-layers(
     // Level 1: Clients
     dg-flex(
@@ -233,7 +239,8 @@ A realistic microservices architecture diagram:
       dg-rect([PostgreSQL], fill: rgb("#f3e8ff")),
       dg-rect([MongoDB], fill: rgb("#f3e8ff")),
     ),
-  )
+  ),
+  caption: [Microservices architecture with clients, gateway, services, and data stores.],
 )
 
 == Example 7: Figure with Caption
@@ -316,7 +323,7 @@ Built-in themes: `theme-light`, `theme-dark`, `theme-blueprint`, `theme-warm`, `
 
 A SysML-style IBD showing internal structure of a Vehicle Control System. This demonstrates the characteristic nested parts with typed instances, stereotypes, and port-like interfaces.
 
-#align(center,
+#figure(
   // System boundary block with stereotype header
   dg-rect(
     dg-layers(
@@ -396,7 +403,8 @@ A SysML-style IBD showing internal structure of a Vehicle Control System. This d
     fill: rgb("#f8fafc"),
     stroke: 1.2pt + rgb("#334155"),
     inset: 8pt,
-  )
+  ),
+  caption: [SysML Internal Block Diagram for a Vehicle Control System.],
 )
 
 The diagram uses:
@@ -435,7 +443,7 @@ The standard Android Open Source Project architecture stack, showing the layered
 #let aosp-yellow = rgb("#fbbf24")
 #let aosp-gray = rgb("#6b7280")
 
-#align(center,
+#figure(
   dg-layers(
     gap: 0.4em,
     // System Apps layer
@@ -567,7 +575,8 @@ The standard Android Open Source Project architecture stack, showing the layered
       inset: 6pt,
       width: 440pt,
     ),
-  )
+  ),
+  caption: [Android Open Source Project (AOSP) architecture stack.],
 )
 
 The classic 5-layer Android stack:
@@ -585,13 +594,14 @@ Decorators add visual annotations to shapes like stereotypes, status indicators,
 
 Add UML-style stereotype labels using the convenience `stereotype` parameter:
 
-#align(center,
+#figure(
   dg-flex(
     gap: 1.5em,
     dg-rect([UserService], stereotype: "service", fill: rgb("#dbeafe")),
     dg-rect([IRepository], stereotype: "interface", fill: rgb("#dcfce7")),
     dg-rect([BaseEntity], stereotype: "abstract", fill: rgb("#fef3c7")),
-  )
+  ),
+  caption: [Stereotype labels for service, interface, and abstract types.],
 )
 
 ```typst
@@ -604,13 +614,14 @@ Add UML-style stereotype labels using the convenience `stereotype` parameter:
 
 Add status dots to show component health or state:
 
-#align(center,
+#figure(
   dg-flex(
     gap: 1.5em,
     dg-rect([Database], status: green, fill: rgb("#f0fdf4")),
     dg-rect([Cache], status: yellow, fill: rgb("#fefce8")),
     dg-rect([External API], status: red, fill: rgb("#fef2f2")),
-  )
+  ),
+  caption: [Status indicators showing healthy, warning, and error states.],
 )
 
 ```typst
@@ -623,12 +634,13 @@ Add status dots to show component health or state:
 
 Use both stereotype and status together:
 
-#align(center,
+#figure(
   dg-flex(
     gap: 1.5em,
     dg-rect([OrderService], stereotype: "service", status: green, fill: rgb("#e0e7ff")),
     dg-rect([PaymentGateway], stereotype: "external", status: orange, fill: rgb("#fff7ed")),
-  )
+  ),
+  caption: [Combined stereotype labels and status indicators.],
 )
 
 ```typst
@@ -640,7 +652,7 @@ Use both stereotype and status together:
 
 For full control, use the `decorators` parameter with constructor functions:
 
-#align(center,
+#figure(
   dg-rect(
     [Component],
     fill: rgb("#f1f5f9"),
@@ -648,7 +660,8 @@ For full control, use the `decorators` parameter with constructor functions:
       dg-stereotype("controller", fill: rgb("#dbeafe")),
       dg-status(blue, position: "top-right", size: 8pt),
     )
-  )
+  ),
+  caption: [Explicit decorator list with custom positioning.],
 )
 
 ```typst
@@ -665,14 +678,15 @@ For full control, use the `decorators` parameter with constructor functions:
 
 Use stroke presets for planned, optional, or tentative elements:
 
-#align(center,
+#figure(
   dg-flex(
     gap: 1.5em,
     dg-rect([Current Feature], fill: rgb("#f0fdf4")),
     dg-rect([Planned Feature], stroke: stroke-dashed, fill: rgb("#f8fafc")),
     dg-rect([Optional Module], stroke: stroke-dotted, fill: rgb("#f8fafc")),
     dg-rect([Future Work], stroke: stroke-planned, fill: rgb("#fafafa")),
-  )
+  ),
+  caption: [Stroke presets: solid, dashed, dotted, and planned styles.],
 )
 
 ```typst
@@ -682,11 +696,127 @@ Use stroke presets for planned, optional, or tentative elements:
 #dg-rect([Future Work], stroke: stroke-planned)
 ```
 
+= Landscape Full-Page Diagram
+
+For large diagrams, use a landscape page. Wrap your diagram in a `page()` call with `flipped: true`:
+
+#page(flipped: true, margin: 1cm)[
+  #figure(
+    dg-layers(
+      gap: 0.6em,
+      // Title bar
+      dg-rect([#set text(fill: white, weight: "bold"); *Enterprise Integration Platform*], fill: rgb("#1e293b"), stroke: none, width: 100%, inset: 12pt),
+      // Top layer: External systems
+      dg-flex(
+        justify: "space-around",
+        gap: 1em,
+        dg-rect([Partner Portal], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
+        dg-rect([Mobile Apps], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
+        dg-rect([Web Frontend], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
+        dg-rect([Third-party APIs], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
+      ),
+      // API Gateway layer
+      dg-rect(
+        dg-flex(
+          justify: "center",
+          gap: 2em,
+          dg-rect([Auth], fill: white, inset: 6pt),
+          dg-rect([Rate Limiting], fill: white, inset: 6pt),
+          dg-rect([Routing], fill: white, inset: 6pt),
+          dg-rect([Logging], fill: white, inset: 6pt),
+        ),
+        stereotype: "gateway",
+        fill: rgb("#dbeafe"),
+        width: 90%,
+        inset: 10pt,
+      ),
+      // Services layer
+      dg-flex(
+        justify: "center",
+        gap: 1em,
+        dg-rect(
+          dg-layers(
+            gap: 0.3em,
+            text(weight: "bold")[User Domain],
+            dg-flex(gap: 0.5em,
+              dg-rect([Users], status: green, fill: white, inset: 5pt),
+              dg-rect([Auth], status: green, fill: white, inset: 5pt),
+            ),
+          ),
+          fill: rgb("#e0e7ff"), inset: 8pt,
+        ),
+        dg-rect(
+          dg-layers(
+            gap: 0.3em,
+            text(weight: "bold")[Order Domain],
+            dg-flex(gap: 0.5em,
+              dg-rect([Orders], status: green, fill: white, inset: 5pt),
+              dg-rect([Cart], status: yellow, fill: white, inset: 5pt),
+            ),
+          ),
+          fill: rgb("#e0e7ff"), inset: 8pt,
+        ),
+        dg-rect(
+          dg-layers(
+            gap: 0.3em,
+            text(weight: "bold")[Product Domain],
+            dg-flex(gap: 0.5em,
+              dg-rect([Catalog], status: green, fill: white, inset: 5pt),
+              dg-rect([Inventory], status: green, fill: white, inset: 5pt),
+            ),
+          ),
+          fill: rgb("#e0e7ff"), inset: 8pt,
+        ),
+        dg-rect(
+          dg-layers(
+            gap: 0.3em,
+            text(weight: "bold")[Payment Domain],
+            dg-flex(gap: 0.5em,
+              dg-rect([Payments], status: green, fill: white, inset: 5pt),
+              dg-rect([Billing], status: red, fill: white, inset: 5pt),
+            ),
+          ),
+          fill: rgb("#e0e7ff"), inset: 8pt,
+        ),
+      ),
+      // Message bus
+      dg-rect([*Event Bus* #h(2em) Kafka / RabbitMQ], stereotype: "infrastructure", fill: rgb("#dcfce7"), width: 90%),
+      // Data layer
+      dg-flex(
+        justify: "center",
+        gap: 1.5em,
+        dg-rect([PostgreSQL], stereotype: "database", fill: rgb("#f3e8ff")),
+        dg-rect([MongoDB], stereotype: "database", fill: rgb("#f3e8ff")),
+        dg-rect([Redis Cache], stereotype: "cache", fill: rgb("#fce7f3")),
+        dg-rect([Elasticsearch], stereotype: "search", fill: rgb("#cffafe")),
+      ),
+    ),
+    caption: [Enterprise Integration Platform — full landscape page layout with domain-driven microservices.],
+  )
+]
+
+```typst
+#page(flipped: true, margin: 1cm)[
+  #set align(center + horizon)
+  #dg-layers(
+    // Title
+    dg-rect([*System Name*], fill: rgb("#1e293b"), ...),
+    // Layers of your architecture...
+    dg-flex(
+      justify: "space-around",
+      dg-rect([Component A], stereotype: "service"),
+      dg-rect([Component B], stereotype: "service"),
+    ),
+    // More layers...
+  )
+]
+```
+
 = Deep Recursion Example
 
 Here's a multi-level architecture diagram showing nested components:
 
-#align(center,
+#figure(
   dg-layers(
     // Top label
     dg-rect([*Cloud Platform*], fill: rgb("#e2e8f0"), width: 320pt),
@@ -737,5 +867,6 @@ Here's a multi-level architecture diagram showing nested components:
     ),
     // Bottom label
     dg-rect([*Kubernetes*], fill: rgb("#e2e8f0"), width: 320pt),
-  )
+  ),
+  caption: [Cloud platform architecture with deeply nested components.],
 )

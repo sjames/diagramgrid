@@ -8,7 +8,6 @@ Perfect for architecture overviews, system diagrams, and layered component visua
 - **Pure Typst** — No external dependencies
 - **CSS Flexbox-inspired** — Familiar `row`/`column`, `justify`, `align-items` semantics
 - **Deep nesting** — Compose diagrams recursively (3–6+ levels)
-- **Beautiful defaults** — Soft colors, subtle radii, good spacing out of the box
 - **Responsive** — Uses `fr`, `auto`, `%` for flexible sizing
 
 ## Installation
