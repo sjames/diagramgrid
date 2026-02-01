@@ -1,6 +1,8 @@
 // shapes.typ — Shape primitives for diagramgrid
 // Provides dg-block (base), dg-rect, dg-circle, dg-ellipse
 
+#import "decorators.typ": dg-stereotype, dg-status, render-decorator
+
 /// Base block shape that all shape aliases use.
 /// - kind: "rect", "circle", or "ellipse"
 /// - content: The content to display inside the shape
@@ -10,6 +12,9 @@
 /// - radius: Corner radius (rect only)
 /// - inset: Inner padding
 /// - align: Content alignment within shape
+/// - decorators: List of decorator dicts (from dg-stereotype, dg-status, etc.)
+/// - stereotype: Convenience parameter for adding a stereotype label
+/// - status: Convenience parameter for adding a status dot color
 #let dg-block(
   content,
   kind: "rect",
@@ -20,6 +25,9 @@
   radius: 5pt,
   inset: (x: 8pt, y: 6pt),
   content-align: center + horizon,
+  decorators: (),
+  stereotype: none,
+  status: none,
   ..rest,
 ) = {
   // Validate kind
@@ -27,6 +35,15 @@
     kind in ("rect", "circle", "ellipse"),
     message: "dg-block: kind must be 'rect', 'circle', or 'ellipse', got '" + kind + "'",
   )
+
+  // Merge convenience params into decorator list
+  let all-decorators = decorators
+  if stereotype != none {
+    all-decorators = all-decorators + (dg-stereotype(stereotype),)
+  }
+  if status != none {
+    all-decorators = all-decorators + (dg-status(status),)
+  }
 
   // Normalize inset to dictionary form
   let padding = if type(inset) == dictionary {
@@ -49,8 +66,8 @@
     },
   )
 
-  // Build the shape
-  if kind == "rect" {
+  // Build the base shape
+  let base-shape = if kind == "rect" {
     rect(
       width: width,
       height: height,
@@ -117,6 +134,18 @@
         )
       }
     }
+  }
+
+  // Wrap with decorators if any
+  if all-decorators.len() == 0 {
+    base-shape
+  } else {
+    box[
+      #base-shape
+      #for dec in all-decorators {
+        render-decorator(dec)
+      }
+    ]
   }
 }
 

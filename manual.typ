@@ -577,6 +577,111 @@ The classic 5-layer Android stack:
 - *HAL* — Hardware abstraction interfaces (green)
 - *Linux Kernel* — Drivers and core OS (red)
 
+= Decorators
+
+Decorators add visual annotations to shapes like stereotypes, status indicators, and more.
+
+== Stereotype Labels
+
+Add UML-style stereotype labels using the convenience `stereotype` parameter:
+
+#align(center,
+  dg-flex(
+    gap: 1.5em,
+    dg-rect([UserService], stereotype: "service", fill: rgb("#dbeafe")),
+    dg-rect([IRepository], stereotype: "interface", fill: rgb("#dcfce7")),
+    dg-rect([BaseEntity], stereotype: "abstract", fill: rgb("#fef3c7")),
+  )
+)
+
+```typst
+#dg-rect([UserService], stereotype: "service", fill: rgb("#dbeafe"))
+#dg-rect([IRepository], stereotype: "interface", fill: rgb("#dcfce7"))
+#dg-rect([BaseEntity], stereotype: "abstract", fill: rgb("#fef3c7"))
+```
+
+== Status Indicators
+
+Add status dots to show component health or state:
+
+#align(center,
+  dg-flex(
+    gap: 1.5em,
+    dg-rect([Database], status: green, fill: rgb("#f0fdf4")),
+    dg-rect([Cache], status: yellow, fill: rgb("#fefce8")),
+    dg-rect([External API], status: red, fill: rgb("#fef2f2")),
+  )
+)
+
+```typst
+#dg-rect([Database], status: green, fill: rgb("#f0fdf4"))
+#dg-rect([Cache], status: yellow, fill: rgb("#fefce8"))
+#dg-rect([External API], status: red, fill: rgb("#fef2f2"))
+```
+
+== Combining Decorators
+
+Use both stereotype and status together:
+
+#align(center,
+  dg-flex(
+    gap: 1.5em,
+    dg-rect([OrderService], stereotype: "service", status: green, fill: rgb("#e0e7ff")),
+    dg-rect([PaymentGateway], stereotype: "external", status: orange, fill: rgb("#fff7ed")),
+  )
+)
+
+```typst
+#dg-rect([OrderService], stereotype: "service", status: green)
+#dg-rect([PaymentGateway], stereotype: "external", status: orange)
+```
+
+== Explicit Decorator List
+
+For full control, use the `decorators` parameter with constructor functions:
+
+#align(center,
+  dg-rect(
+    [Component],
+    fill: rgb("#f1f5f9"),
+    decorators: (
+      dg-stereotype("controller", fill: rgb("#dbeafe")),
+      dg-status(blue, position: "top-right", size: 8pt),
+    )
+  )
+)
+
+```typst
+#dg-rect(
+  [Component],
+  decorators: (
+    dg-stereotype("controller", fill: rgb("#dbeafe")),
+    dg-status(blue, position: "top-right", size: 8pt),
+  )
+)
+```
+
+== Stroke Presets
+
+Use stroke presets for planned, optional, or tentative elements:
+
+#align(center,
+  dg-flex(
+    gap: 1.5em,
+    dg-rect([Current Feature], fill: rgb("#f0fdf4")),
+    dg-rect([Planned Feature], stroke: stroke-dashed, fill: rgb("#f8fafc")),
+    dg-rect([Optional Module], stroke: stroke-dotted, fill: rgb("#f8fafc")),
+    dg-rect([Future Work], stroke: stroke-planned, fill: rgb("#fafafa")),
+  )
+)
+
+```typst
+#dg-rect([Current Feature], fill: rgb("#f0fdf4"))
+#dg-rect([Planned Feature], stroke: stroke-dashed)
+#dg-rect([Optional Module], stroke: stroke-dotted)
+#dg-rect([Future Work], stroke: stroke-planned)
+```
+
 = Deep Recursion Example
 
 Here's a multi-level architecture diagram showing nested components:
