@@ -15,6 +15,9 @@
 /// - decorators: List of decorator dicts (from dg-stereotype, dg-status, etc.)
 /// - stereotype: Convenience parameter for adding a stereotype label
 /// - status: Convenience parameter for adding a status dot color
+/// - header: Header text/content displayed at top (rect only)
+/// - header-fill: Background color for header section
+/// - header-inset: Padding for header (default: (x: 8pt, y: 4pt))
 #let dg-block(
   content,
   kind: "rect",
@@ -28,6 +31,9 @@
   decorators: (),
   stereotype: none,
   status: none,
+  header: none,
+  header-fill: none,
+  header-inset: (x: 8pt, y: 4pt),
   ..rest,
 ) = {
   // Validate kind
@@ -57,14 +63,48 @@
     (left: inset, right: inset, top: inset, bottom: inset)
   }
 
-  // Inner content with alignment
-  let inner = box(
-    inset: padding,
-    {
-      set align(content-align)
-      content
-    },
-  )
+  // Normalize header-inset to dictionary form
+  let header-padding = if type(header-inset) == dictionary {
+    (
+      left: header-inset.at("left", default: header-inset.at("x", default: 0pt)),
+      right: header-inset.at("right", default: header-inset.at("x", default: 0pt)),
+      top: header-inset.at("top", default: header-inset.at("y", default: 0pt)),
+      bottom: header-inset.at("bottom", default: header-inset.at("y", default: 0pt)),
+    )
+  } else {
+    (left: header-inset, right: header-inset, top: header-inset, bottom: header-inset)
+  }
+
+  // Inner content with alignment (or header+content stack for rect with header)
+  let inner = if header != none and kind == "rect" {
+    stack(
+      dir: ttb,
+      spacing: 0pt,
+      // Header bar
+      box(
+        width: 100%,
+        fill: header-fill,
+        inset: header-padding,
+        align(center, header),
+      ),
+      // Content area
+      box(
+        inset: padding,
+        {
+          set align(content-align)
+          content
+        },
+      ),
+    )
+  } else {
+    box(
+      inset: padding,
+      {
+        set align(content-align)
+        content
+      },
+    )
+  }
 
   // Build the base shape
   let base-shape = if kind == "rect" {

@@ -1,14 +1,17 @@
 # diagramgrid
 
-Simple, recursive block diagrams with flex-like layouts using native Typst grid.
-Perfect for architecture overviews, system diagrams, and layered component visualizations.
+Sometimes you just want a quick block diagram to explain a concept without learning complex diagram syntax. This is a lightweight Typst package for exactly that.
+
+Recursive block diagrams with CSS flexbox-like layouts, built on native Typst primitives. Perfect for architecture overviews, system diagrams, and layered component visualizations.
 
 ## Features
 
 - **Pure Typst** — No external dependencies
 - **CSS Flexbox-inspired** — Familiar `row`/`column`, `justify`, `align-items` semantics
-- **Deep nesting** — Compose diagrams recursively (3–6+ levels)
-- **Responsive** — Uses `fr`, `auto`, `%` for flexible sizing
+- **Deep nesting** — Compose diagrams recursively to any depth
+- **Container headers** — Title bars for grouping nested components
+- **Decorators** — UML-style stereotypes and status indicators
+- **Theming** — Built-in themes and easy customization
 
 ## Installation
 
@@ -76,36 +79,33 @@ Perfect for architecture overviews, system diagrams, and layered component visua
 )
 ```
 
-### Deep Recursion (4 levels)
+### Container with Header
 
 ```typst
-#dg-layers(
-  [Application Layer],
-  dg-group(padding: 8pt,
-    dg-flex(
-      direction: "row",
-      gap: 1em,
-      dg-layers(
-        gap: 0.8em,
-        inset: 8pt,
-        [Module A],
-        [Module B],
-      ),
-      dg-layers(
-        gap: 0.8em,
-        inset: 8pt,
-        [Module C],
-        dg-flex(
-          direction: "row",
-          gap: 0.5em,
-          dg-circle([1]),
-          dg-circle([2]),
-        ),
-      ),
-    ),
+#dg-rect(
+  dg-flex(
+    dg-rect([Service A], fill: white),
+    dg-rect([Service B], fill: white),
   ),
-  [Infrastructure],
+  header: text(weight: "bold")[API Gateway],
+  header-fill: rgb("#1e40af"),
+  fill: rgb("#dbeafe"),
 )
+```
+
+### Decorators
+
+```typst
+// Stereotype labels
+#dg-rect([UserService], stereotype: "service", fill: rgb("#dbeafe"))
+#dg-rect([IRepository], stereotype: "interface", fill: rgb("#dcfce7"))
+
+// Status indicators
+#dg-rect([Database], status: green)
+#dg-rect([External API], status: red)
+
+// Combined
+#dg-rect([OrderService], stereotype: "service", status: green)
 ```
 
 ## Theming
@@ -146,8 +146,13 @@ Perfect for architecture overviews, system diagrams, and layered component visua
 - `radius`: Corner radius (default: `5pt`)
 - `inset`: Padding (default: `(x: 8pt, y: 6pt)`)
 - `content-align`: Content alignment (default: `center + horizon`)
+- `header`: Header text/content displayed at top
+- `header-fill`: Background color for header section
+- `header-inset`: Padding for header (default: `(x: 8pt, y: 4pt)`)
+- `stereotype`: UML-style label (e.g., `"service"`, `"interface"`)
+- `status`: Status indicator dot color (e.g., `green`, `red`)
 
-**`dg-circle(content, ..options)`** — Circle block (same options, no radius)
+**`dg-circle(content, ..options)`** — Circle block (same options, no radius/header)
 
 **`dg-ellipse(content, ..options)`** — Ellipse block
 

@@ -289,6 +289,9 @@ Using diagramgrid inside a figure:
 - `radius`: Corner radius (default: `5pt`)
 - `inset`: Padding (default: `(x: 8pt, y: 6pt)`)
 - `content-align`: Content alignment (default: `center + horizon`)
+- `header`: Header text/content displayed at top
+- `header-fill`: Background color for header section
+- `header-inset`: Padding for header (default: `(x: 8pt, y: 4pt)`)
 
 *`dg-circle(content, ..options)`* — Circle block (same options, no radius)
 
@@ -696,100 +699,257 @@ Use stroke presets for planned, optional, or tentative elements:
 #dg-rect([Future Work], stroke: stroke-planned)
 ```
 
+= Container Headers
+
+Headers provide title bars for container elements, useful for labeling nested diagrams and grouped components.
+
+== Basic Header
+
+Add a header to any rectangle using the `header` parameter:
+
+#figure(
+  dg-rect(
+    dg-flex(
+      dg-rect([Service A], fill: white),
+      dg-rect([Service B], fill: white),
+    ),
+    header: "API Gateway",
+    fill: rgb("#dbeafe"),
+  ),
+  caption: [Simple header on a container element.],
+)
+
+```typst
+#dg-rect(
+  dg-flex(
+    dg-rect([Service A], fill: white),
+    dg-rect([Service B], fill: white),
+  ),
+  header: "API Gateway",
+  fill: rgb("#dbeafe"),
+)
+```
+
+== Header with Distinct Fill
+
+Use `header-fill` to give the header a different background color:
+
+#figure(
+  dg-rect(
+    dg-layers(
+      dg-rect([Component 1], fill: white),
+      dg-rect([Component 2], fill: white),
+    ),
+    header: text(fill: white, weight: "bold")[Container Name],
+    header-fill: rgb("#1e293b"),
+    fill: rgb("#f1f5f9"),
+  ),
+  caption: [Header with distinct dark background.],
+)
+
+```typst
+#dg-rect(
+  dg-layers(
+    dg-rect([Component 1], fill: white),
+    dg-rect([Component 2], fill: white),
+  ),
+  header: text(fill: white, weight: "bold")[Container Name],
+  header-fill: rgb("#1e293b"),
+  fill: rgb("#f1f5f9"),
+)
+```
+
+== Nested Containers with Headers
+
+Headers work well with deeply nested structures:
+
+#figure(
+  dg-rect(
+    dg-flex(
+      gap: 1em,
+      dg-rect(
+        dg-layers(
+          dg-rect([Auth], fill: white, inset: 4pt),
+          dg-rect([Users], fill: white, inset: 4pt),
+        ),
+        header: "Identity",
+        header-fill: rgb("#dbeafe"),
+        fill: rgb("#dbeafe").lighten(60%),
+        inset: 6pt,
+      ),
+      dg-rect(
+        dg-layers(
+          dg-rect([Orders], fill: white, inset: 4pt),
+          dg-rect([Inventory], fill: white, inset: 4pt),
+        ),
+        header: "Commerce",
+        header-fill: rgb("#dcfce7"),
+        fill: rgb("#dcfce7").lighten(60%),
+        inset: 6pt,
+      ),
+    ),
+    header: text(fill: white, weight: "bold")[Microservices Platform],
+    header-fill: rgb("#334155"),
+    fill: rgb("#f8fafc"),
+    inset: 8pt,
+  ),
+  caption: [Nested containers with headers at multiple levels.],
+)
+
+```typst
+#dg-rect(
+  dg-flex(
+    gap: 1em,
+    dg-rect(
+      dg-layers(...),
+      header: "Identity",
+      header-fill: rgb("#dbeafe"),
+      fill: rgb("#dbeafe").lighten(60%),
+    ),
+    dg-rect(
+      dg-layers(...),
+      header: "Commerce",
+      header-fill: rgb("#dcfce7"),
+      fill: rgb("#dcfce7").lighten(60%),
+    ),
+  ),
+  header: text(fill: white, weight: "bold")[Microservices Platform],
+  header-fill: rgb("#334155"),
+  fill: rgb("#f8fafc"),
+)
+```
+
+== Headers with Decorators
+
+Headers can be combined with stereotype and status decorators:
+
+#figure(
+  dg-flex(
+    gap: 1.5em,
+    dg-rect(
+      dg-rect([Database], fill: white),
+      header: "Data Layer",
+      fill: rgb("#f3e8ff"),
+      stereotype: "subsystem",
+    ),
+    dg-rect(
+      dg-flex(
+        dg-rect([API], fill: white, inset: 4pt),
+        dg-rect([Auth], fill: white, inset: 4pt),
+      ),
+      header: "Gateway",
+      fill: rgb("#dcfce7"),
+      status: green,
+    ),
+  ),
+  caption: [Headers combined with stereotype labels and status indicators.],
+)
+
+```typst
+#dg-rect(
+  dg-rect([Database], fill: white),
+  header: "Data Layer",
+  fill: rgb("#f3e8ff"),
+  stereotype: "subsystem",
+)
+```
+
 = Landscape Full-Page Diagram
 
 For large diagrams, use a landscape page. Wrap your diagram in a `page()` call with `flipped: true`:
 
 #page(flipped: true, margin: 1cm)[
   #figure(
-    dg-layers(
-      gap: 0.6em,
-      // Title bar
-      dg-rect([#set text(fill: white, weight: "bold"); *Enterprise Integration Platform*], fill: rgb("#1e293b"), stroke: none, width: 100%, inset: 12pt),
-      // Top layer: External systems
-      dg-flex(
-        justify: "space-around",
-        gap: 1em,
-        dg-rect([Partner Portal], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
-        dg-rect([Mobile Apps], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
-        dg-rect([Web Frontend], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
-        dg-rect([Third-party APIs], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
-      ),
-      // API Gateway layer
-      dg-rect(
+    dg-rect(
+      dg-layers(
+        gap: 0.6em,
+        // Top layer: External systems
+        dg-flex(
+          justify: "space-around",
+          gap: 1em,
+          dg-rect([Partner Portal], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
+          dg-rect([Mobile Apps], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
+          dg-rect([Web Frontend], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
+          dg-rect([Third-party APIs], stereotype: "external", fill: rgb("#fef3c7"), width: 120pt),
+        ),
+        // API Gateway layer
+        dg-rect(
+          dg-flex(
+            justify: "center",
+            gap: 2em,
+            dg-rect([Auth], fill: white, inset: 6pt),
+            dg-rect([Rate Limiting], fill: white, inset: 6pt),
+            dg-rect([Routing], fill: white, inset: 6pt),
+            dg-rect([Logging], fill: white, inset: 6pt),
+          ),
+          stereotype: "gateway",
+          fill: rgb("#dbeafe"),
+          width: 90%,
+          inset: 10pt,
+        ),
+        // Services layer
         dg-flex(
           justify: "center",
-          gap: 2em,
-          dg-rect([Auth], fill: white, inset: 6pt),
-          dg-rect([Rate Limiting], fill: white, inset: 6pt),
-          dg-rect([Routing], fill: white, inset: 6pt),
-          dg-rect([Logging], fill: white, inset: 6pt),
-        ),
-        stereotype: "gateway",
-        fill: rgb("#dbeafe"),
-        width: 90%,
-        inset: 10pt,
-      ),
-      // Services layer
-      dg-flex(
-        justify: "center",
-        gap: 1em,
-        dg-rect(
-          dg-layers(
-            gap: 0.3em,
-            text(weight: "bold")[User Domain],
+          gap: 1em,
+          dg-rect(
             dg-flex(gap: 0.5em,
               dg-rect([Users], status: green, fill: white, inset: 5pt),
               dg-rect([Auth], status: green, fill: white, inset: 5pt),
             ),
+            header: text(weight: "bold")[User Domain],
+            header-fill: rgb("#c7d2fe"),
+            fill: rgb("#e0e7ff"),
+            inset: 8pt,
           ),
-          fill: rgb("#e0e7ff"), inset: 8pt,
-        ),
-        dg-rect(
-          dg-layers(
-            gap: 0.3em,
-            text(weight: "bold")[Order Domain],
+          dg-rect(
             dg-flex(gap: 0.5em,
               dg-rect([Orders], status: green, fill: white, inset: 5pt),
               dg-rect([Cart], status: yellow, fill: white, inset: 5pt),
             ),
+            header: text(weight: "bold")[Order Domain],
+            header-fill: rgb("#c7d2fe"),
+            fill: rgb("#e0e7ff"),
+            inset: 8pt,
           ),
-          fill: rgb("#e0e7ff"), inset: 8pt,
-        ),
-        dg-rect(
-          dg-layers(
-            gap: 0.3em,
-            text(weight: "bold")[Product Domain],
+          dg-rect(
             dg-flex(gap: 0.5em,
               dg-rect([Catalog], status: green, fill: white, inset: 5pt),
               dg-rect([Inventory], status: green, fill: white, inset: 5pt),
             ),
+            header: text(weight: "bold")[Product Domain],
+            header-fill: rgb("#c7d2fe"),
+            fill: rgb("#e0e7ff"),
+            inset: 8pt,
           ),
-          fill: rgb("#e0e7ff"), inset: 8pt,
-        ),
-        dg-rect(
-          dg-layers(
-            gap: 0.3em,
-            text(weight: "bold")[Payment Domain],
+          dg-rect(
             dg-flex(gap: 0.5em,
               dg-rect([Payments], status: green, fill: white, inset: 5pt),
               dg-rect([Billing], status: red, fill: white, inset: 5pt),
             ),
+            header: text(weight: "bold")[Payment Domain],
+            header-fill: rgb("#c7d2fe"),
+            fill: rgb("#e0e7ff"),
+            inset: 8pt,
           ),
-          fill: rgb("#e0e7ff"), inset: 8pt,
+        ),
+        // Message bus
+        dg-rect([*Event Bus* #h(2em) Kafka / RabbitMQ], stereotype: "infrastructure", fill: rgb("#dcfce7"), width: 90%),
+        // Data layer
+        dg-flex(
+          justify: "center",
+          gap: 1.5em,
+          dg-rect([PostgreSQL], stereotype: "database", fill: rgb("#f3e8ff")),
+          dg-rect([MongoDB], stereotype: "database", fill: rgb("#f3e8ff")),
+          dg-rect([Redis Cache], stereotype: "cache", fill: rgb("#fce7f3")),
+          dg-rect([Elasticsearch], stereotype: "search", fill: rgb("#cffafe")),
         ),
       ),
-      // Message bus
-      dg-rect([*Event Bus* #h(2em) Kafka / RabbitMQ], stereotype: "infrastructure", fill: rgb("#dcfce7"), width: 90%),
-      // Data layer
-      dg-flex(
-        justify: "center",
-        gap: 1.5em,
-        dg-rect([PostgreSQL], stereotype: "database", fill: rgb("#f3e8ff")),
-        dg-rect([MongoDB], stereotype: "database", fill: rgb("#f3e8ff")),
-        dg-rect([Redis Cache], stereotype: "cache", fill: rgb("#fce7f3")),
-        dg-rect([Elasticsearch], stereotype: "search", fill: rgb("#cffafe")),
-      ),
+      header: text(fill: white, weight: "bold", size: 14pt)[Enterprise Integration Platform],
+      header-fill: rgb("#1e293b"),
+      header-inset: 12pt,
+      fill: rgb("#f8fafc"),
+      stroke: 1pt + rgb("#334155"),
+      inset: 10pt,
     ),
     caption: [Enterprise Integration Platform — full landscape page layout with domain-driven microservices.],
   )
@@ -797,17 +957,26 @@ For large diagrams, use a landscape page. Wrap your diagram in a `page()` call w
 
 ```typst
 #page(flipped: true, margin: 1cm)[
-  #set align(center + horizon)
-  #dg-layers(
-    // Title
-    dg-rect([*System Name*], fill: rgb("#1e293b"), ...),
-    // Layers of your architecture...
-    dg-flex(
-      justify: "space-around",
-      dg-rect([Component A], stereotype: "service"),
-      dg-rect([Component B], stereotype: "service"),
+  #dg-rect(
+    dg-layers(
+      // External systems row
+      dg-flex(...),
+      // Domain services with headers
+      dg-flex(
+        dg-rect(
+          dg-flex(...services...),
+          header: text(weight: "bold")[User Domain],
+          header-fill: rgb("#c7d2fe"),
+          fill: rgb("#e0e7ff"),
+        ),
+        // More domains...
+      ),
+      // Data layer
+      dg-flex(...),
     ),
-    // More layers...
+    header: text(fill: white, weight: "bold")[Platform Name],
+    header-fill: rgb("#1e293b"),
+    fill: rgb("#f8fafc"),
   )
 ]
 ```
