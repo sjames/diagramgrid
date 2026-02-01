@@ -312,6 +312,271 @@ Built-in themes: `theme-light`, `theme-dark`, `theme-blueprint`, `theme-warm`, `
 #themed-rect(theme-warm, [Block])
 ```
 
+= SysML Internal Block Diagram Style
+
+A SysML-style IBD showing internal structure of a Vehicle Control System. This demonstrates the characteristic nested parts with typed instances, stereotypes, and port-like interfaces.
+
+#align(center,
+  // System boundary block with stereotype header
+  dg-rect(
+    dg-layers(
+      gap: 0.3em,
+      // Stereotype and block name header
+      dg-rect(
+        [#text(size: 8pt)[«block»] \ #text(weight: "bold")[VehicleControlSystem]],
+        fill: rgb("#f1f5f9"),
+        width: 380pt,
+        stroke: none,
+        inset: (x: 8pt, y: 4pt),
+      ),
+      // Internal parts
+      dg-flex(
+        justify: "center",
+        gap: 1em,
+        // Sensor Subsystem part
+        dg-rect(
+          dg-layers(
+            gap: 0.2em,
+            dg-rect(
+              [#text(size: 7pt)[sensors : SensorSubsystem]],
+              fill: rgb("#dbeafe"),
+              stroke: none,
+              inset: 3pt,
+            ),
+            dg-flex(
+              gap: 0.5em,
+              dg-rect([lidar : LiDAR], fill: white, inset: 4pt),
+              dg-rect([camera : Camera], fill: white, inset: 4pt),
+            ),
+            dg-flex(
+              gap: 0.5em,
+              dg-rect([radar : Radar], fill: white, inset: 4pt),
+              dg-rect([imu : IMU], fill: white, inset: 4pt),
+            ),
+          ),
+          fill: rgb("#dbeafe").lighten(60%),
+          inset: 6pt,
+        ),
+        // Processing Unit part
+        dg-rect(
+          dg-layers(
+            gap: 0.2em,
+            dg-rect(
+              [#text(size: 7pt)[processor : ProcessingUnit]],
+              fill: rgb("#dcfce7"),
+              stroke: none,
+              inset: 3pt,
+            ),
+            dg-rect([fusion : SensorFusion], fill: white, inset: 4pt),
+            dg-rect([planner : PathPlanner], fill: white, inset: 4pt),
+            dg-rect([controller : MotionCtrl], fill: white, inset: 4pt),
+          ),
+          fill: rgb("#dcfce7").lighten(60%),
+          inset: 6pt,
+        ),
+        // Actuator Subsystem part
+        dg-rect(
+          dg-layers(
+            gap: 0.2em,
+            dg-rect(
+              [#text(size: 7pt)[actuators : ActuatorSubsystem]],
+              fill: rgb("#f3e8ff"),
+              stroke: none,
+              inset: 3pt,
+            ),
+            dg-rect([steering : SteerCtrl], fill: white, inset: 4pt),
+            dg-rect([throttle : ThrottleCtrl], fill: white, inset: 4pt),
+            dg-rect([brake : BrakeCtrl], fill: white, inset: 4pt),
+          ),
+          fill: rgb("#f3e8ff").lighten(60%),
+          inset: 6pt,
+        ),
+      ),
+    ),
+    fill: rgb("#f8fafc"),
+    stroke: 1.2pt + rgb("#334155"),
+    inset: 8pt,
+  )
+)
+
+The diagram uses:
+- *Stereotype headers* (`«block»`) identifying the block type
+- *Typed parts* (`name : Type` notation) showing instances
+- *Nested composition* showing internal structure of subsystems
+
+```typst
+dg-rect(
+  dg-layers(
+    // Stereotype header
+    dg-rect([#text(size: 8pt)[«block»] \ #text(weight: "bold")[SystemName]], ...),
+    // Internal parts row
+    dg-flex(
+      // Each part with typed name
+      dg-rect(
+        dg-layers(
+          dg-rect([partName : PartType], ...),
+          // Nested components...
+        ),
+        fill: color.lighten(60%),
+      ),
+    ),
+  ),
+  stroke: 1.2pt + rgb("#334155"),  // System boundary
+)
+```
+
+= AOSP Architecture Diagram
+
+The standard Android Open Source Project architecture stack, showing the layered system design from Linux kernel to applications.
+
+#let aosp-green = rgb("#a4c639")
+#let aosp-blue = rgb("#3b82f6")
+#let aosp-red = rgb("#ef4444")
+#let aosp-yellow = rgb("#fbbf24")
+#let aosp-gray = rgb("#6b7280")
+
+#align(center,
+  dg-layers(
+    gap: 0.4em,
+    // System Apps layer
+    dg-rect(
+      dg-layers(
+        gap: 0.2em,
+        dg-rect([*System Apps*], fill: aosp-green.lighten(20%), stroke: none, width: 420pt),
+        dg-flex(
+          justify: "center",
+          gap: 0.4em,
+          dg-rect([Dialer], fill: aosp-green.lighten(60%), inset: 5pt),
+          dg-rect([Email], fill: aosp-green.lighten(60%), inset: 5pt),
+          dg-rect([Calendar], fill: aosp-green.lighten(60%), inset: 5pt),
+          dg-rect([Camera], fill: aosp-green.lighten(60%), inset: 5pt),
+          dg-rect([Browser], fill: aosp-green.lighten(60%), inset: 5pt),
+          dg-rect([...], fill: aosp-green.lighten(60%), inset: 5pt),
+        ),
+      ),
+      fill: aosp-green.lighten(80%),
+      inset: 6pt,
+      width: 440pt,
+    ),
+    // Java API Framework
+    dg-rect(
+      dg-layers(
+        gap: 0.2em,
+        dg-rect([*Java API Framework*], fill: aosp-blue.lighten(20%), stroke: none, width: 420pt),
+        dg-flex(
+          justify: "center",
+          gap: 0.4em,
+          dg-rect([Content Providers], fill: aosp-blue.lighten(70%), inset: 5pt),
+          dg-rect([View System], fill: aosp-blue.lighten(70%), inset: 5pt),
+          dg-rect([Managers], fill: aosp-blue.lighten(70%), inset: 5pt),
+        ),
+        dg-flex(
+          justify: "center",
+          gap: 0.4em,
+          dg-rect([Activity], fill: aosp-blue.lighten(80%), inset: 4pt),
+          dg-rect([Window], fill: aosp-blue.lighten(80%), inset: 4pt),
+          dg-rect([Package], fill: aosp-blue.lighten(80%), inset: 4pt),
+          dg-rect([Telephony], fill: aosp-blue.lighten(80%), inset: 4pt),
+          dg-rect([Resource], fill: aosp-blue.lighten(80%), inset: 4pt),
+          dg-rect([Location], fill: aosp-blue.lighten(80%), inset: 4pt),
+          dg-rect([Notification], fill: aosp-blue.lighten(80%), inset: 4pt),
+        ),
+      ),
+      fill: aosp-blue.lighten(85%),
+      inset: 6pt,
+      width: 440pt,
+    ),
+    // Native Libraries + Android Runtime (side by side)
+    dg-flex(
+      justify: "center",
+      gap: 0.4em,
+      // Native C/C++ Libraries
+      dg-rect(
+        dg-layers(
+          gap: 0.2em,
+          dg-rect([*Native C/C++ Libraries*], fill: aosp-blue.lighten(30%), stroke: none),
+          dg-flex(
+            gap: 0.3em,
+            dg-rect([Webkit], fill: aosp-blue.lighten(75%), inset: 4pt),
+            dg-rect([Libc], fill: aosp-blue.lighten(75%), inset: 4pt),
+          ),
+          dg-flex(
+            gap: 0.3em,
+            dg-rect([Media], fill: aosp-blue.lighten(75%), inset: 4pt),
+            dg-rect([OpenGL ES], fill: aosp-blue.lighten(75%), inset: 4pt),
+          ),
+          dg-flex(
+            gap: 0.3em,
+            dg-rect([SQLite], fill: aosp-blue.lighten(75%), inset: 4pt),
+            dg-rect([SSL], fill: aosp-blue.lighten(75%), inset: 4pt),
+          ),
+        ),
+        fill: aosp-blue.lighten(88%),
+        inset: 6pt,
+      ),
+      // Android Runtime
+      dg-rect(
+        dg-layers(
+          gap: 0.2em,
+          dg-rect([*Android Runtime*], fill: aosp-yellow.lighten(20%), stroke: none),
+          dg-rect([Android Runtime (ART)], fill: aosp-yellow.lighten(60%), inset: 5pt),
+          dg-rect([Core Libraries], fill: aosp-yellow.lighten(60%), inset: 5pt),
+        ),
+        fill: aosp-yellow.lighten(80%),
+        inset: 6pt,
+      ),
+    ),
+    // Hardware Abstraction Layer
+    dg-rect(
+      dg-layers(
+        gap: 0.2em,
+        dg-rect([*Hardware Abstraction Layer (HAL)*], fill: aosp-green.lighten(30%), stroke: none, width: 420pt),
+        dg-flex(
+          justify: "center",
+          gap: 0.4em,
+          dg-rect([Audio], fill: aosp-green.lighten(70%), inset: 4pt),
+          dg-rect([Bluetooth], fill: aosp-green.lighten(70%), inset: 4pt),
+          dg-rect([Camera], fill: aosp-green.lighten(70%), inset: 4pt),
+          dg-rect([Sensors], fill: aosp-green.lighten(70%), inset: 4pt),
+          dg-rect([Graphics], fill: aosp-green.lighten(70%), inset: 4pt),
+          dg-rect([...], fill: aosp-green.lighten(70%), inset: 4pt),
+        ),
+      ),
+      fill: aosp-green.lighten(85%),
+      inset: 6pt,
+      width: 440pt,
+    ),
+    // Linux Kernel
+    dg-rect(
+      dg-layers(
+        gap: 0.2em,
+        dg-rect([*Linux Kernel*], fill: aosp-red.lighten(20%), stroke: none, width: 420pt),
+        dg-flex(
+          justify: "center",
+          gap: 0.3em,
+          dg-rect([Audio], fill: aosp-red.lighten(70%), inset: 4pt),
+          dg-rect([Binder], fill: aosp-red.lighten(70%), inset: 4pt),
+          dg-rect([Display], fill: aosp-red.lighten(70%), inset: 4pt),
+          dg-rect([Camera], fill: aosp-red.lighten(70%), inset: 4pt),
+          dg-rect([USB], fill: aosp-red.lighten(70%), inset: 4pt),
+          dg-rect([WiFi], fill: aosp-red.lighten(70%), inset: 4pt),
+          dg-rect([Power], fill: aosp-red.lighten(70%), inset: 4pt),
+        ),
+      ),
+      fill: aosp-red.lighten(85%),
+      inset: 6pt,
+      width: 440pt,
+    ),
+  )
+)
+
+The classic 5-layer Android stack:
+- *System Apps* — Pre-installed applications (green)
+- *Java API Framework* — Android SDK APIs and managers (blue)
+- *Native Libraries + Runtime* — C/C++ libs and ART side-by-side (blue/yellow)
+- *HAL* — Hardware abstraction interfaces (green)
+- *Linux Kernel* — Drivers and core OS (red)
+
 = Deep Recursion Example
 
 Here's a multi-level architecture diagram showing nested components:
